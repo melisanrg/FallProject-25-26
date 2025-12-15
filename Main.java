@@ -36,8 +36,8 @@ public class Main {
         }
 
         public static int totalProfitOnDay(int month, int day) {
-            if (month < 0 || month >= MONTHS || day < 1 || day > DAYS) return -99999;
             int sum = 0;
+            if (month < 0 || month >= MONTHS || day < 1 || day > DAYS) return -99999;
             for (int i = 0; i < COMMS; i++) {
                 sum += profits[month][day - 1][i];
             }
@@ -45,7 +45,19 @@ public class Main {
         }
 
         public static int commodityProfitInRange(String commodity, int from, int to) {
-            return 1234;
+            int cIndex = -1;
+            for (int i = 0; i < COMMS; i++) {
+                if (commodities[i].equals(commodity)) cIndex = i;
+            }
+            if (cIndex == -1 || from < 1 || to > DAYS || from > to) return -99999;
+
+            int sum = 0;
+            for (int j = 0; j < MONTHS; j++) {
+                for (int k = from - 1; k <= to - 1; k++) {
+                    sum += profits[j][k][cIndex];
+                }
+            }
+            return sum;
         }
 
         public static int bestDayOfMonth(int month) {
@@ -78,8 +90,8 @@ public class Main {
 
         public static int biggestDailySwing(int month) {
             if (month < 0 || month >= MONTHS) return -99999;
-            int maxSwing = 0;
 
+            int maxSwing = 0;
             for (int i = 0; i < DAYS - 1; i++) {
                 int today = 0;
                 int next = 0;

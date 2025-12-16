@@ -96,7 +96,24 @@ public class Main {
         }
 
         public static int consecutiveLossDays(String comm) {
-            return 1234;
+            int cIndex = -1;
+            for (int i = 0; i < COMMS; i++) if (commodities[i].equals(comm)) cIndex = i;
+            if (cIndex == -1) return -1;
+
+            int maxStreak = 0;
+            int current = 0;
+
+            for (int i = 0; i < MONTHS; i++) {
+                for (int j = 0; j < DAYS; j++) {
+                    if (profits[i][j][cIndex] < 0) {
+                        current++;
+                        if (current > maxStreak) maxStreak = current;
+                    } else {
+                        current = 0;
+                    }
+                }
+            }
+            return maxStreak;
         }
 
         public static int daysAboveThreshold(String comm, int threshold) {

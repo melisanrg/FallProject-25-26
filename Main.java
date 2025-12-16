@@ -77,7 +77,22 @@ public class Main {
         }
 
         public static String bestMonthForCommodity(String comm) {
-            return "DUMMY";
+            int cIndex = -1;
+            for (int i = 0; i < COMMS; i++) if (commodities[i].equals(comm)) cIndex = i;
+            if (cIndex == -1) return "INVALID_COMMODITY";
+
+            int bestMonth = 0;
+            int bestProfit = Integer.MIN_VALUE;
+
+            for (int i = 0; i < MONTHS; i++) {
+                int sum = 0;
+                for (int j = 0; j < DAYS; j++) sum += profits[i][j][cIndex];
+                if (sum > bestProfit) {
+                        bestProfit = sum;
+                        bestMonth = i;
+                }
+            }
+            return months[bestMonth];
         }
 
         public static int consecutiveLossDays(String comm) {

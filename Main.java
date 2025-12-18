@@ -168,7 +168,30 @@ public class Main {
         }
 
         public static String compareTwoCommodities(String c1, String c2) {
-            return "DUMMY is better by 1234";
+            int i1 = -1;
+            int i2 = -1;
+            for (int i = 0; i < COMMS; i++) {
+                if (commodities[i].equals(c1)){
+                    i1 = i;
+                } if (commodities[i].equals(c2)){
+                    i2 = i;
+                }
+            }
+            if (i1 == -1 || i2 == -1) return "INVALID_COMMODITY";
+
+
+            int sum1 = 0;
+            int sum2 = 0;
+            for (int i = 0; i < MONTHS; i++){
+                for (int j = 0; j < DAYS; j++) {
+                    sum1 += profits[i][j][i1];
+                    sum2 += profits[i][j][i2];
+                }
+            }
+
+            if (sum1 > sum2) return c1 + " is better by " + (sum1 - sum2);
+            if (sum2 > sum1) return c2 + " is better by " + (sum2 - sum1);
+            return "Equal";
         }
 
         public static String bestWeekOfMonth(int month) {

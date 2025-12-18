@@ -47,7 +47,9 @@ public class Main {
         public static int commodityProfitInRange(String commodity, int from, int to) {
             int cIndex = -1;
             for (int i = 0; i < COMMS; i++) {
-                if (commodities[i].equals(commodity)) cIndex = i;
+                if (commodities[i].equals(commodity)){
+                    cIndex = i;
+                }
             }
             if (cIndex == -1 || from < 1 || to > DAYS || from > to) return -99999;
 
@@ -67,10 +69,12 @@ public class Main {
 
             for (int i = 0; i < DAYS; i++) {
                 int sum = 0;
-                for (int j = 0; j < COMMS; j++) sum += profits[month][i][j];
-                if (sum > bestProfit) {
-                    bestProfit = sum;
-                    bestDay = i + 1;
+                for (int j = 0; j < COMMS; j++) {
+                    sum += profits[month][i][j];
+                    if (sum > bestProfit) {
+                        bestProfit = sum;
+                        bestDay = i + 1;
+                    }
                 }
             }
             return bestDay;
@@ -78,7 +82,11 @@ public class Main {
 
         public static String bestMonthForCommodity(String comm) {
             int cIndex = -1;
-            for (int i = 0; i < COMMS; i++) if (commodities[i].equals(comm)) cIndex = i;
+            for (int i = 0; i < COMMS; i++){
+                if (commodities[i].equals(comm)){
+                    cIndex = i;
+                }
+            }
             if (cIndex == -1) return "INVALID_COMMODITY";
 
             int bestMonth = 0;
@@ -86,10 +94,12 @@ public class Main {
 
             for (int i = 0; i < MONTHS; i++) {
                 int sum = 0;
-                for (int j = 0; j < DAYS; j++) sum += profits[i][j][cIndex];
-                if (sum > bestProfit) {
+                for (int j = 0; j < DAYS; j++) {
+                    sum += profits[i][j][cIndex];
+                    if (sum > bestProfit) {
                         bestProfit = sum;
                         bestMonth = i;
+                    }
                 }
             }
             return months[bestMonth];
@@ -97,8 +107,11 @@ public class Main {
 
         public static int consecutiveLossDays(String comm) {
             int cIndex = -1;
-            for (int i = 0; i < COMMS; i++) if (commodities[i].equals(comm)) cIndex = i;
-            if (cIndex == -1) return -1;
+            for (int i = 0; i < COMMS; i++){
+                if (commodities[i].equals(comm)) {
+                    cIndex = i;
+                }
+            } if (cIndex == -1) return -1;
 
             int maxStreak = 0;
             int current = 0;
@@ -117,7 +130,22 @@ public class Main {
         }
 
         public static int daysAboveThreshold(String comm, int threshold) {
-            return 1234;
+            int cIndex = -1;
+            for (int i = 0; i < COMMS; i++) {
+                if (commodities[i].equals(comm)) {
+                    cIndex = i;
+                }
+            } if (cIndex == -1) return -1;
+
+            int count = 0;
+            for (int i = 0; i < MONTHS; i++) {
+                for (int j = 0; j < DAYS; j++) {
+                    if (profits[i][j][cIndex] > threshold) {
+                        count++;
+                    }
+                }
+            }
+            return count;
         }
 
         public static int biggestDailySwing(int month) {
@@ -132,7 +160,9 @@ public class Main {
                     next += profits[month][i + 1][j];
                 }
                 int diff = Math.abs(today - next);
-                if (diff > maxSwing) maxSwing = diff;
+                if (diff > maxSwing){
+                    maxSwing = diff;
+                }
             }
             return maxSwing;
         }
@@ -149,11 +179,14 @@ public class Main {
 
             for (int i = 0; i < 4; i++) {
                 int sum = 0;
-                for (int j = i * 7; j < i * 7 + 7; j++)
-                    for (int k = 0; k < COMMS; k++) sum += profits[month][j][k];
-                if (sum > bestProfit) {
-                    bestProfit = sum;
-                    bestWeek = i + 1;
+                for (int j = i * 7; j < i * 7 + 7; j++) {
+                    for (int k = 0; k < COMMS; k++) {
+                        sum += profits[month][j][k];
+                        if (sum > bestProfit) {
+                            bestProfit = sum;
+                            bestWeek = i + 1;
+                        }
+                    }
                 }
             }
             return "Week " + bestWeek;

@@ -9,12 +9,33 @@ public class Main {
         static String[] months = {"January","February","March","April","May","June",
                 "July","August","September","October","November","December"};
         private static  int [][][] profits = new int [MONTHS][DAYS][COMMS];
+        // months-> folder, day-> file, comms-> row
 
-        // ======== REQUIRED METHOD LOAD DATA (Students fill this) ========
         public static void loadData() {
-        }
+            // Reads all monthly files and stores profit values into 3D array
+            for (int i = 0; i < MONTHS; i++) {
+                String filename = "Data_Files/" + months[i] + ".txt";
+                try {
+                    Scanner sc = new Scanner(new File(filename)); //It is used to read the file line by line.
+                    while (sc.hasNextLine()) {
+                        String line = sc.nextLine();
+                        String[] parts = line.split(",");
+                        int day = Integer.parseInt(parts[0]) - 1; //0-based bcs days in folder:1->28,as an index:0->27
+                        String comm = parts[1];
+                        int profit = Integer.parseInt(parts[2]);
 
-        // ======== 10 REQUIRED METHODS (Students fill these) ========
+                        for (int j = 0; j < COMMS; j++) {
+                            if (commodities[j].equals(comm)) {
+                                profits[i][day][j] = profit;
+                            }
+                        }
+                    }
+                    sc.close();
+                } catch (Exception e) {
+                // Robustness: ignore file errors
+                }
+            }
+        }
 
         public static String mostProfitableCommodityInMonth(int month) {
             if (month < 0 || month >= MONTHS) return "INVALID_MONTH";
@@ -71,10 +92,10 @@ public class Main {
                 int sum = 0;
                 for (int j = 0; j < COMMS; j++) {
                     sum += profits[month][i][j];
-                    if (sum > bestProfit) {
-                        bestProfit = sum;
-                        bestDay = i + 1;
                     }
+                if (sum > bestProfit) {
+                    bestProfit = sum;
+                    bestDay = i + 1;
                 }
             }
             return bestDay;
@@ -96,10 +117,10 @@ public class Main {
                 int sum = 0;
                 for (int j = 0; j < DAYS; j++) {
                     sum += profits[i][j][cIndex];
-                    if (sum > bestProfit) {
-                        bestProfit = sum;
-                        bestMonth = i;
                     }
+                if (sum > bestProfit) {
+                    bestProfit = sum;
+                    bestMonth = i;
                 }
             }
             return months[bestMonth];
@@ -205,11 +226,11 @@ public class Main {
                 for (int j = i * 7; j < i * 7 + 7; j++) {
                     for (int k = 0; k < COMMS; k++) {
                         sum += profits[month][j][k];
-                        if (sum > bestProfit) {
-                            bestProfit = sum;
-                            bestWeek = i + 1;
-                        }
                     }
+                }
+                if (sum > bestProfit) {
+                    bestProfit = sum;
+                    bestWeek = i + 1;
                 }
             }
             return "Week " + bestWeek;
@@ -219,4 +240,4 @@ public class Main {
             loadData();
             System.out.println("Data loaded – ready for queries");
         }
-    }
+}
